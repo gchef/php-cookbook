@@ -1,4 +1,6 @@
-if Chef::Extensions.wan_up?
+wan_up = `host -W 1 google.com`.index(/has address/)
+
+if wan_up
   apt_package "php5-fpm" do
     version "#{node[:php][:version]}*"
     keep_conf true
@@ -37,7 +39,8 @@ if Chef::Extensions.wan_up?
     notifies :restart, resources(:service => "php5-fpm"), :delayed
   end
 
-  service "php5-fpm" do
-    action :start
-  end
+  #service "php5-fpm" do
+    #action :start
+    #only_if { `service php5-fpm status`.index(/not running/) }
+  #end
 end

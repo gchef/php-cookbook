@@ -1,12 +1,8 @@
 require_recipe "apt"
 
-apt_repository "php5" do
-  uri node[:php][:apt][:uri]
-  keyserver node[:php][:apt][:keyserver]
-  key node[:php][:apt][:key]
-end
+wan_up = `host -W 1 google.com`.index(/has address/)
 
-if Chef::Extensions.wan_up?
+if wan_up
   node[:php][:core_packages].each do |name|
     apt_package name do
       version "#{node[:php][:version]}*"

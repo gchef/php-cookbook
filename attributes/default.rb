@@ -1,11 +1,5 @@
 set[:php][:version]             = '5.3.10'
 
-set[:php][:apt][:uri]           = 'http://ppa.launchpad.net/brianmercer/php5/ubuntu'
-set[:php][:apt][:sources]       = %w[deb deb-src]
-set[:php][:apt][:distributions] = %w[main]
-set[:php][:apt][:keyserver]     = 'keyserver.ubuntu.com'
-set[:php][:apt][:key]           = '8D0DC64F'
-
 set[:php][:core_packages]       = %w[php5 php5-common php5-cli php5-dev php-pear]
 
 default[:php][:extensions_dir]  = '/usr/lib/php5/ext'

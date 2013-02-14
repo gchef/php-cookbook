@@ -27,7 +27,7 @@ include Chef::Mixin::ShellOut
 # refactoring into core chef easy
 
 action :install do
-  if Chef::Extensions.wan_up?
+  if wan_up?
     # If we specified a version, and it's not the current version, move to the specified version
     if @new_resource.version != nil && @new_resource.version != @current_resource.version
       install_version = @new_resource.version
@@ -47,7 +47,7 @@ action :install do
 end
 
 action :upgrade do
-  if Chef::Extensions.wan_up?
+  if wan_up?
     if @current_resource.version != candidate_version
       orig_version = @current_resource.version || "uninstalled"
       Chef::Log.info("Upgrading #{@new_resource} version from #{orig_version} to #{candidate_version}")
@@ -233,4 +233,8 @@ end
 # this allows PhpPear to work with Chef::Resource::Package
 def can_haz(resource, attribute_name)
   resource.respond_to?(attribute_name) ? resource.send(attribute_name) : nil
+end
+
+def wan_up?
+  `host -W 1 google.com`.index(/has address/)
 end
