@@ -22,8 +22,8 @@
 ; Unix user/group of processes
 ; Note: The user is mandatory. If the group is not set, the default user's group
 ;       will be used.
-user = <%= node[:php][:fpm_user] %>
-group = <%= node[:php][:fpm_group] %>
+user = <%= node[:php][:fpm][:www][:user] %>
+group = <%= node[:php][:fpm][:www][:group] %>
 
 ; The address on which to accept FastCGI requests.
 ; Valid syntaxes are:
@@ -33,7 +33,7 @@ group = <%= node[:php][:fpm_group] %>
 ;                            specific port;
 ;   '/path/to/unix/socket' - to listen on a unix socket.
 ; Note: This value is mandatory.
-listen = <%= node[:php][:listen] %>
+listen = <%= node[:php][:fpm][:www][:listen] %>
 
 ; Set listen(2) backlog. A value of '-1' means unlimited.
 ; Default Value: 128 (-1 on FreeBSD and OpenBSD)
@@ -216,7 +216,10 @@ pm.max_requests = <%= node[:php][:fpm][:www][:max_requests] %>
 ;       anything, but it may not be a good idea to use the .php extension or it
 ;       may conflict with a real PHP file.
 ; Default Value: not set 
+;pm.status_path = /status
+<% if node[:php][:fpm][:www][:status_path] %>
 pm.status_path = <%= node[:php][:fpm][:www][:status_path] %>
+<% end %>
  
 ; The ping URI to call the monitoring page of FPM. If this value is not set, no
 ; URI will be recognized as a ping page. This could be used to test from outside
@@ -228,7 +231,10 @@ pm.status_path = <%= node[:php][:fpm][:www][:status_path] %>
 ;       anything, but it may not be a good idea to use the .php extension or it
 ;       may conflict with a real PHP file.
 ; Default Value: not set
+;ping.path = /ping
+<% if node[:php][:fpm][:www][:ping_path] %>
 ping.path = <%= node[:php][:fpm][:www][:ping_path] %>
+<% end %>
 
 ; This directive may be used to customize the response of a ping request. The
 ; response is formatted as text/plain with a 200 response code.

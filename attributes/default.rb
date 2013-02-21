@@ -1,6 +1,5 @@
-set[:php][:version]             = '5.3.10'
-
-set[:php][:core_packages]       = %w[php5 php5-common php5-cli php5-dev php-pear]
+default[:php][:version]             = '5.3.10'
+default[:php][:core_packages]       = %w[php5 php5-common php5-cli php5-dev php-pear]
 
 default[:php][:extensions_dir]  = '/usr/lib/php5/ext'
 default[:php][:conf_dir]        = '/etc/php5'
@@ -12,14 +11,6 @@ default[:php][:extensions]      = []
 
 ########################################################################### PHP-FPM #
 #
-# Include one or more files. If glob(3) exists, it is used to include a bunch of
-# files from a glob(3) pattern. This directive can be used everywhere in the
-# file.
-# Relative path can also be used. They will be prefixed by:
-#  - the global prefix if it's been set (-p arguement)
-#  - /usr otherwise
-default[:php][:fpm][:include] = '/etc/php5/fpm/*.conf'
-#
 # Pid file
 # Note: the default prefix is /var
 default[:php][:fpm][:pid] = '/var/run/php5-fpm.pid'
@@ -28,7 +19,8 @@ default[:php][:fpm][:pid] = '/var/run/php5-fpm.pid'
 # If it's set to "syslog", log is sent to syslogd instead of being written
 # in a local file.
 # Note: the default prefix is /var
-default[:php][:fpm][:error_log] = '/var/log/php-fpm/error.log'
+set[:php][:fpm][:log_dir] = '/var/log/php-fpm'
+default[:php][:fpm][:error_log] = "#{php[:fpm][:log_dir]}/error.log"
 #
 # syslog_facility is used to specify what type of program is logging the
 # message. This lets syslogd specify that messages from different facilities
@@ -49,7 +41,7 @@ default[:php][:fpm][:log_level] = 'notice'
 # the global number of processes when using dynamic PM within a lot of pools.
 # Use it with caution.
 # Note: A value of 0 indicates no limit
-default[:php][:fpm][:process_max] = 0
+default[:php][:fpm][:process_max] = 128
 
 
 
@@ -137,19 +129,19 @@ default[:php][:fpm][:www][:max_requests] = 500
 #
 # The URI to view the FPM status page. If this value is not set, no URI will be
 # recognized as a status page.
-default[:php][:fpm][:www][:status_path] = ''
+default[:php][:fpm][:www][:status_path] = false
 #
 # The ping URI to call the monitoring page of FPM. If this value is not set, no
 # URI will be recognized as a ping page. This could be used to test from outside
 # that FPM is alive and responding, or to
-default[:php][:fpm][:www][:ping_path] = ''
+default[:php][:fpm][:www][:ping_path] = false
 #
 # This directive may be used to customize the response of a ping request. The
 # response is formatted as text/plain with a 200 response code.
 default[:php][:fpm][:www][:ping_response] = 'pong'
 #
 # The access log file
-default[:php][:fpm][:www][:access_log] = '/var/log/php-fpm/$pool.access.log'
+default[:php][:fpm][:www][:access_log] = "#{php[:fpm][:log_dir]}/$pool.access.log"
 #
 # The access log format.
 # The following syntax is allowed
@@ -205,7 +197,7 @@ default[:php][:fpm][:www][:access_log] = '/var/log/php-fpm/$pool.access.log'
 default[:php][:fpm][:www][:access_format] = '%R - %u %t "%m %r%Q%q" %s %f %{mili}d %{kilo}M %C%%'
 #
 # The log file for slow requests
-default[:php][:fpm][:www][:slow_log] = '/var/log/php-fpm/$pool.slow.log'
+default[:php][:fpm][:www][:slow_log] = "#{php[:fpm][:log_dir]}/$pool.slow.log"
 #
 # The timeout for serving a single request after which a PHP backtrace will be
 # dumped to the 'slowlog' file. A value of '0' means 'off'.
