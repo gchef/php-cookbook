@@ -23,20 +23,19 @@ if wan_up
     notifies :restart, resources(:service => "php5-fpm"), :delayed
   end
 
-  directory node[:php][:fpm][:log_dir] do
-    owner node[:php][:fpm][:www][:user]
-    group node[:php][:fpm][:www][:group]
-    mode "0700"
+  directory "/var/log/php-fpm" do
+    owner "root"
+    group "root"
+    mode "0754"
+  end
+
+  directory "/var/lib/php5" do
+    owner "root"
+    group "www-data"
+    mode "0750"
   end
 
   template "/etc/php5/fpm/php-fpm.conf" do
-    owner "root"
-    group "root"
-    mode "0644"
-    notifies :restart, resources(:service => "php5-fpm"), :delayed
-  end
-
-  template "/etc/php5/fpm/pool.d/www.conf" do
     owner "root"
     group "root"
     mode "0644"
@@ -47,6 +46,10 @@ if wan_up
     source "php5-fpm.sysv.erb"
     mode "0754"
     notifies :restart, resources(:service => "php5-fpm"), :delayed
+  end
+
+  php_fpm_pool :www do
+    action (node[:php][:fpm][:default_pool] ? :create : :delete)
   end
 
   service "php5-fpm" do
