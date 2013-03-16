@@ -1,4 +1,4 @@
-require_recipe "apt"
+include_recipe "apt"
 
 wan_up = `host -W 1 google.com`.index(/has address/)
 
