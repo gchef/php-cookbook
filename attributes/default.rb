@@ -1,5 +1,5 @@
 default[:php][:version]        = '5.3.10'
-default[:php][:core_packages]  = %w[php5 php5-common php5-cli php5-dev php-pear]
+default[:php][:core_packages]  = %w[php5-common php5-cli php5-dev php-pear]
 
 default[:php][:extensions_dir] = '/usr/lib/php5/ext'
 default[:php][:conf_dir]       = '/etc/php5'
