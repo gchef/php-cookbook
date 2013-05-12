@@ -8,14 +8,14 @@ action :create do
     variables(
       :pool => new_resource
     )
-    notifies :reload, resources(:service => "php5-fpm"), :delayed
+    notifies :restart, resources(:service => "php5-fpm"), :delayed
   end
 end
 
 action :delete do
   file "/etc/php5/fpm/pool.d/#{new_resource.name}.conf" do
     action :delete
-    notifies :reload, resources(:service => "php5-fpm"), :delayed
+    notifies :restart, resources(:service => "php5-fpm"), :delayed
   end
 
   bash "delete all php-fpm pool logs for #{new_resource.name}" do
@@ -25,6 +25,6 @@ end
 
 def load_current_resource
   service "php5-fpm" do
-    supports :reload  => true
+    supports :restart  => true
   end
 end
