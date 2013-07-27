@@ -50,5 +50,20 @@ default[:php][:fpm][:pools] = []
 # way to fix it would be to define a pool manually. Chef run won't complete otherwise.
 default[:php][:fpm][:default_pool] = true
 
+### Logrotation settings
+#
+default[:php][:fpm][:logrotate][:manage]        = true
+default[:php][:fpm][:logrotate][:period]        = "daily"
+default[:php][:fpm][:logrotate][:keep]          = 7
+default[:php][:fpm][:logrotate][:mode]          = "0600"
+# php-fpm master runs as root
+default[:php][:fpm][:logrotate][:user]          = "root"
+default[:php][:fpm][:logrotate][:group]         = "root"
+default[:php][:fpm][:logrotate][:copytruncate]  = true
+
+
+
+########################################################################### SUHOSIN #
+#
 default[:php][:suhosin][:session_cryptdocroot] = 'On'
 default[:php][:suhosin][:memory_limit] = '64M'

@@ -29,6 +29,21 @@ if wan_up
     mode "0754"
   end
 
+  if node.has_key?(:bootstrap)
+    rotated_logs_permissions = [
+      node[:php][:fpm][:logrotate][:mode],
+      node[:php][:fpm][:logrotate][:user],
+      node[:php][:fpm][:logrotate][:group],
+    ].join(' ')
+
+    bootstrap_logrotate "php-fpm" do
+      rotate node[:php][:fpm][:logrotate][:period]
+      keep node[:php][:fpm][:logrotate][:keep]
+      permissions rotated_logs_permissions
+      copytruncate node[:php][:fpm][:logrotate][:copytruncate]
+    end
+  end
+
   directory "/var/lib/php5" do
     owner "root"
     group "www-data"
