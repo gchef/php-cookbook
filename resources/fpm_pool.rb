@@ -167,7 +167,7 @@ attribute :access_log, :default => "/var/log/php-fpm/$pool.access.log"
 #      it can accept a strftime(3) format:
 #      %d/%b/%Y:%H:%M:%S %z (default)
 #  %u: remote user
-attribute :access_log_format, :default => '%R - %u %t " %m %r%Q%q " %s %f %{mili}d %{kilo}M %C%%'
+attribute :access_log_format, :default => '%R - %u %t " %m %r%Q%q " %s %f %{miliseconds}dms %{megabytes}MMB %C%%'
 
 # The log file for slow requests
 attribute :slow_log, :default => "/var/log/php-fpm/$pool.slow.log"
